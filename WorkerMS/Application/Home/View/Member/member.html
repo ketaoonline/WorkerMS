@@ -1,0 +1,134 @@
+<style>
+    .member-add{display: none;}
+</style>
+<div class="a-nav">
+    <a href="javascript:void(0)" onclick="$('.member-add').show();$('.member-show').hide();"><p>添加成员</p></a>
+    <a href="{:U('Member/member')}"><p>所有成员</p></a>
+    <volist name="departments" id="vo">
+        <a href="{:U('Member/member', array('department' => $vo['name']))}"><p>{$vo.name}</p></a>
+    </volist>
+</div>
+<div class="member-show">
+    <div>
+        <table class="table-show">
+            <tr>
+                <td class="width80">账户</td>
+                <td class="width80">密码</td>
+                <td class="width80">姓名</td>
+                <td class="width80">部门</td>
+                <td class="width80">级别</td>
+                <td class="width120">上次评分人-时间</td>
+                <td class="width120">考核项目</td>
+                <td class="width80">权重</td>
+                <td class="width120 text-center">操作</td>
+            </tr>
+            <volist name="members" id="vo">
+                <tr>
+                    <td class="color-whitesmoke">{$vo.account}</td>
+                    <td class="color-whitesmoke">{$vo.password}</td>
+                    <td class="color-whitesmoke">{$vo.name}</td>
+                    <td class="color-whitesmoke">{$vo.department}</td>
+                    <td class="color-whitesmoke">{$vo.office}</td>
+                    <td class="color-whitesmoke">{$vo.examer_time}</td>
+                    <td class="color-whitesmoke">{$vo.exam}</td>
+                    <td class="color-whitesmoke">{$vo.exam_weight}</td>
+                    <td class="a-nav color-whitesmoke">
+                        <a href="{:U('Member/detail', array('id' => $vo['id']))}"><p>修改</p></a>
+                        <a href="{:U('Member/delete', array('id' => $vo['id']))}"><p>删除</p></a>
+                    </td>
+                </tr>
+            </volist>
+        </table>
+    </div>
+    <div>
+        {$page}
+    </div>
+</div>
+<div class="member-add" flag="{$add}">
+    <div class="div-form">
+        <form action="{:U('Member/member')}" method="post" id="form-add">
+            <table class="table-add">
+                <tr>
+                    <td class="width80 text-right">工号</td>
+                    <td><input class="ipt_wy" type="text" name="account"></td>
+                </tr>
+                <tr>
+                    <td class="width80 text-right">密码</td>
+                    <td><input class="ipt_wy" type="text" name="password"></td>
+                </tr>
+                <tr>
+                    <td class="width80 text-right">姓名</td>
+                    <td><input class="ipt_wy" type="text" name="name"></td>
+                </tr>
+                <tr>
+                    <td class="width80 text-right">部门</td>
+                    <td>
+                        <select name="department" id="">
+                            <option value="">选择部门，可以为空</option>
+                            <volist name="departments" id="vo">
+                                <option value="{$vo.name}">{$vo.name}</option>
+                            </volist>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="width80 text-right">级别</td>
+                    <td>
+                        <select name="office" id="vo">
+                            <option value="">请选择职位</option>
+                            <volist name="levels" id="vo">
+                                <option value="{$vo.level}">{$vo.level}</option>
+                            </volist>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <div class="tips">
+            <p class="color-white">考勤/业绩：里面的数值是权重，不能为空（0<=值<=1）</p>
+            <p class="color-white">提示：添加评分人时请在后面跟上评分权重（例:admin=0.8）</p>
+            <p class="color-white">提示：所有的 权重和 应该等于 1</p>
+        </div>
+        <div class="a-nav ml60">
+            <a href="javascript:void(0)" onclick="add_exam()"><p>添加考核</p></a>
+            <a href="javascript:void(0)" onclick="document.getElementById('form-add').submit()"><p>提交</p></a>
+            <a href="javascript:void(0)" onclick="exam_self()"><p>添加自我评价</p></a>
+        </div>
+    </div>
+</div>
+<script>
+    if($('.member-add').attr('flag') == '1'){
+        $('.member-add').show();
+        $('.member-show').hide();
+    }
+    function add_exam(){
+        $.get('/WorkerMS/index.php/Home/Login/get_exam', {}, function(data){
+            console.log(data);
+            var exam = data.exam;
+            var leader = data.leaders;
+            var html = '<tr><td class="text-right">考核</td><td><select name="exam[]" id=""><option value="">考核项目</option>';
+            $.each(exam, function (index, content) {
+                html += '<option value="'+ content.project +'">'+ content.project +'</option>';
+            });
+            html += '</select><select name="examer[]" id=""><option value="">考核人员</option>';
+            $.each(leader, function (index, content) {
+                html += '<option value="'+ content.name +'">'+ content.name +'</option>';
+            });
+            html += '</select><input class="width80" type="text" name="weight[]" value="0."></td></tr>';
+            $('.table-add').append(html);
+        });
+    }
+    function exam_self(){
+        $.get('/WorkerMS/index.php/Home/Login/get_exam', {}, function(data){
+            console.log(data);
+            var exam = data.exam;
+            var leader = data.leaders;
+            var html = '<tr><td class="text-right">考核</td><td><select name="exam[]" id=""><option value="">考核项目</option>';
+            $.each(exam, function (index, content) {
+                html += '<option value="'+ content.project +'">'+ content.project +'</option>';
+            });
+            html += '</select><input class="width80" type="text" name="examer[]" value="self"><input class="width80" type="text" name="weight[]" value="0."></td></tr>';
+            $('.table-add').append(html);
+        });
+    }
+</script>

@@ -1,0 +1,49 @@
+<style>
+    .main{margin-top: 30px;margin-left: 20px;}
+    table{color: white;}
+    td{height: 50px;line-height: 50px;font-size: 18px;width: 120px;}
+    input{width: 60px;}
+    #form-rate a{margin-left: 0px;}
+</style>
+<div class="main">
+    <p class="color-white">当前考核人员：{$person_examed}</p>
+    <p class="color-white">当前考核项目：{$exam_project}</p>
+    <div class="div-form">
+        <form action="{:U('Exam/him')}" method="post" id="form-rate">
+            <table>
+                <input type="hidden" name="project" value="{$exam_project}">
+                <input type="hidden" name="name" value="{$person_examed}">
+                <tr>
+                    <td>打分项</td>
+                    <td>得分</td>
+                    <td>总分</td>
+                </tr>
+                <volist name="exam_content" id="vo">
+                    <tr>
+                        <td>{$vo.content}<input type="hidden" name="content[]" value="{$vo.content}"></td>
+                        <td><input class="ipt_wy" type="text" name="grade[]" data-flag='{$vo.grade}' onBlur="check(event)"></td>
+                        <td>{$vo.grade}</td>
+                    </tr>
+                </volist>
+                <tr>
+                    <td></td>
+                    <td class="a-nav"><a href="#" onclick="document.getElementById('form-rate').submit()"><p>提交</p></a></td>
+                    <td></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+<script>
+    function check(e) {
+        var ev = e || event;
+        var obj = ev.target || ev.srcElement;
+        var flag = $(obj).attr('data-flag');
+        var input = $(obj).val();
+        if(Number(input) == NaN || Number(input) > Number(flag)) {
+            $(obj).val('0');
+        } else {
+            $(obj).val(input);
+        }
+    }
+</script>

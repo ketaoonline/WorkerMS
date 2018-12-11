@@ -1,0 +1,45 @@
+<div>
+    <div>
+        <p class="color-white">用于作为添加员工考核人的参考</p>
+    </div>
+    <div class="a-nav">
+        <a href="javascript:void(0)" onclick="$('.office-add').show();$('.office-show').hide();"><p>职位添加</p></a>
+        <a href="javascript:void(0)" onclick="$('.office-show').show();$('.office-add').hide();"><p>职位展示</p></a>
+    </div>
+    <div class="office-show" style="display: none;">
+        <table>
+            <tr>
+                <td>职位名称</td>
+                <td>职位排序</td>
+                <td class="width180 text-center">操作</td>
+            </tr>
+            <volist name="offices" id="vo">
+                <form action="{:U('Index/office_modify')}" id="office{$vo.id}">
+                    <input type="hidden" name="id" value="{$vo.id}">
+                <tr>
+                    <td>{$vo.level}</td>
+                    <td><input type="text" name="sort" value="{$vo.sort}"></td>
+                    <td class="a-nav">
+                        <a href="javascript:void(0)" onclick="document.getElementById('office{$vo.id}').submit()"><p>修改</p></a>
+                        <a href="{:U('Index/office_del', array('id' => $vo['id']))}"><p>删除</p></a></td>
+                </tr>
+                </form>
+            </volist>
+        </table>
+    </div>
+    <div class="office-add">
+        <form action="{:U('Index/office')}" method="post" id="office-form">
+            <table id="office">
+                <tr>
+                    <td>职位名称</td>
+                    <td><input type="text" name="level"></td>
+                </tr>
+                <tr>
+                    <td>职位排序</td>
+                    <td><input type="text" name="sort" placeholder="大于0,值越小，职位越高"></td>
+                    <td><input type="submit" value="添加" style="margin-left: 20px;margin-bottom: 10px;"></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

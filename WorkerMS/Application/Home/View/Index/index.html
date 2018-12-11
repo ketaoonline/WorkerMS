@@ -1,0 +1,25 @@
+<div>
+    <div class="a-nav">
+        <volist name="departments" id="vo">
+            <a href="{:U('Member/grade', array('department' => $vo['name']))}"><p>{$vo.name}</p></a>
+        </volist>
+    </div>
+    <table style="padding-left: 30px;">
+        <tr>
+            <td class="width80">部门</td>
+            <td class="width80">时间</td>
+            <td class="width80">员工</td>
+            <td style="min-width: 180px;">得分详情</td>
+            <td class="width80">得分</td>
+        </tr>
+        <volist name="grades" id="vo">
+            <tr>
+                <td>{$vo.department}</td>
+                <td>{$vo.time}</td>
+                <td>{$vo.member}</td>
+                <td>{$vo.msg}</td>
+                <td>{$vo.grade}</td>
+            </tr>
+        </volist>
+    </table>
+</div>

@@ -1,0 +1,37 @@
+<div>
+    <div>
+        <p>仅用于添加员工时作为选择</p>
+    </div>
+    <div class="a-nav">
+        <a href="javascript:void(0)" onclick="$('.project-add').show();$('.project-show').hide();"><p>项目添加</p></a>
+        <a href="javascript:void(0)" onclick="$('.project-show').show();$('.project-add').hide();"><p>项目展示</p></a>
+    </div>
+    <div class="project-show">
+        <table>
+            <tr>
+                <td>项目名称</td>
+                <td>操作</td>
+            </tr>
+            <volist name="exams" id="vo">
+                <tr>
+                    <td>{$vo.project}</td>
+                    <td class="a-nav">
+                        <a href="{:U('Exam/detail', array('project' => $vo['project']))}"><p>详情</p></a>
+                        <a href="{:U('Exam/project_del', array('project' => $vo['project']))}"><p>删除</p></a>
+                    </td>
+                </tr>
+            </volist>
+        </table>
+    </div>
+    <div class="project-add">
+        <form action="{:U('Exam/project')}" method="post" id="project-form">
+            <table id="project">
+                <tr>
+                    <td>项目名称</td>
+                    <td><input type="text" name="project"></td>
+                    <td><input type="submit" value="添加"></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

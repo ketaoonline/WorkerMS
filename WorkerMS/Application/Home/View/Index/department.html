@@ -1,0 +1,34 @@
+<div>
+    <div>
+        <p class="color-white">仅用于添加员工时作为选择</p>
+    </div>
+    <div class="a-nav">
+        <a href="javascript:void(0)" onclick="$('.department-add').show();$('.department-show').hide();"><p>部门添加</p></a>
+        <a href="javascript:void(0)" onclick="$('.department-show').show();$('.department-add').hide();"><p>部门展示</p></a>
+    </div>
+    <div class="department-show">
+        <table>
+            <tr>
+                <td>部门名称</td>
+                <td>操作</td>
+            </tr>
+            <volist name="departments" id="vo">
+                <tr>
+                    <td>{$vo.name}</td>
+                    <td class="a-nav"><a href="{:U('Index/department_del', array('id' => $vo['id']))}"><p>删除</p></a></td>
+                </tr>
+            </volist>
+        </table>
+    </div>
+    <div class="department-add">
+        <form action="{:U('Index/department')}" method="post" id="department-form">
+            <table id="department">
+                <tr>
+                    <td>部门名称</td>
+                    <td><input type="text" name="department"></td>
+                    <td><input type="submit" value="添加"></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

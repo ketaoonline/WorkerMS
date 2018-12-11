@@ -1,0 +1,42 @@
+<div>
+    <form action="{:U('Exam/exam_info')}" method="post" id="form_exam_info">
+        <input type="hidden" name="project" value="{$project_name}">
+        <table id="tab_exam_info">
+            <tr>
+                <td>考核项目</td>
+                <td>{$project_name}</td>
+            </tr>
+            <tr>
+                <td>考核内容</td>
+                <td>该项分数</td>
+            </tr>
+            <volist name="exam_content" id="vo">
+                <tr>
+                    <td><input type="text" name="exam[]" value="{$vo.content}"></td>
+                    <td><input type="text" name="grade[]" value="{$vo.grade}"></td>
+                </tr>
+            </volist>
+            <tr>
+                <td><input type="text" name="exam[]" value=""></td>
+                <td><input type="text" name="grade[]" value=""></td>
+            </tr>
+        </table>
+    </form>
+    <div class="a-nav">
+        <a href="javascript:void(0)" onclick="add_exam()"><p>添加</p></a>
+        <input class="ipt_wy" type="text" id="exam-num" value="1" style="float: left;">
+        <a href="javascript:void(0)" onclick="add_exam()"><p>个考核项目</p></a>
+        <a href="javascript:void(0)" onclick="submit_exam()"><p>提交</p></a>
+    </div>
+</div>
+<script>
+    function add_exam(){
+        var num = $('#exam-num').val();
+        for(var i=0; i<num; i++){
+            $("#tab_exam_info").append('<tr><td><input type="text" name="exam[]" value=""></td><td><input type="text" name="grade[]" value=""></td></tr>');
+        }
+    }
+    function submit_exam(){
+        $('#form_exam_info').submit();
+    }
+</script>
